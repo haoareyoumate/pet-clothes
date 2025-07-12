@@ -11,21 +11,15 @@ class AnimalClothesGenerator:
     A class for generating images of animals dressed in different clothes using Google's Gemini AI.
     """
     
-    def __init__(self, api_key=None, env_path="env/.env"):
+    def __init__(self, env_path="env/.env"):
         """
         Initialize the AnimalClothesGenerator with API client.
-        
         Args:
-            api_key (str, optional): Google API key. If not provided, will load from env file
             env_path (str): Path to the environment file containing API keys
         """
-        if api_key:
-            # Use provided API key
-            self.client = genai.Client(api_key=api_key)
-        else:
-            # Load from environment file
-            load_dotenv(env_path)
-            self.client = genai.Client()
+        # Always load from environment file (no API key argument)
+        load_dotenv(env_path)
+        self.client = genai.Client()
         
     def _analyze_animal_pose(self, animal_image_path):
         """

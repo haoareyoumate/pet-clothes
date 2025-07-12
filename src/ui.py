@@ -169,15 +169,10 @@ def main():
     if 'selected_clothes' not in st.session_state:
         st.session_state.selected_clothes = None
     
-    # Sidebar for settings
+    # Sidebar for settings (API key input removed)
     with st.sidebar:
         st.header("⚙️ Settings")
-        api_key = st.text_input(
-            "Google API Key",
-            type="password",
-            help="Enter your Google Gemini API key to style your pet",
-            placeholder="Enter your API key here..."
-        )
+        st.info("🐱🐶")
     
     # Main content area
     col1, col2 = st.columns([1, 1])
@@ -218,15 +213,15 @@ def main():
     # Generation section
     st.markdown("---")
     
-    if temp_animal_path and selected_clothes and api_key:
+    if temp_animal_path and selected_clothes:
         col_gen1, col_gen2, col_gen3 = st.columns([1, 2, 1])
         
         with col_gen2:
             if st.button("Style My Pet", type="primary"):
                 try:
                     with st.spinner("Creating your pet's fashionable look... This may take a few moments!"):
-                        # Initialize generator with API key
-                        generator = AnimalClothesGenerator(api_key=api_key)
+                        # Initialize generator without API key
+                        generator = AnimalClothesGenerator()
                         
                         # Generate the image
                         generated_image = generator.generate_dressed_animal(
@@ -247,7 +242,7 @@ def main():
                         
                 except Exception as e:
                     st.error(f"❌ Oops! Something went wrong: {str(e)}")
-                    st.error("Please check your API key and try again.")
+                    st.error("Please try again later.")
                     
                     # Show detailed error in expander for debugging
                     with st.expander("🔍 Show detailed error"):
@@ -257,8 +252,6 @@ def main():
         st.warning("⚠️ Please upload a photo of your pet first.")
     elif not selected_clothes:
         st.warning("⚠️ Please choose an adorable outfit for your pet.")
-    elif not api_key:
-        st.warning("⚠️ Please enter your Google API key in the sidebar.")
     
     # Footer
     st.markdown("---")
